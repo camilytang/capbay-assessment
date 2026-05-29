@@ -43,26 +43,33 @@ router.get('/', async (req: Request, res: Response) => {
         const rawPage = Array.isArray(req.query.page) ? req.query.page[0] : req.query.page;
         const rawLimit = Array.isArray(req.query.limit) ? req.query.limit[0] : req.query.limit;
         const rawSearch = Array.isArray(req.query.search) ? req.query.search[0] : req.query.search;
+        const rawSort = Array.isArray(req.query.sort) ? req.query.sort[0] : req.query.sort;
+        const rawStatus = Array.isArray(req.query.status) ? req.query.status[0] : req.query.status;
 
         const page = parseInt(rawPage as string, 10) || 1;
         const limit = parseInt(rawLimit as string, 10) || 20;
         const search = (rawSearch as string) || '';
+        const sort = (rawSort as string) || 'desc';
+        const statusFilter = (rawStatus as string) || '';
         const skip = (page - 1) * limit;
 
-        const where = search ? {
-            OR: [
-                { name: { contains: search, mode: 'insensitive' as const } },
-                { email: { contains: search, mode: 'insensitive' as const } },
-                { icNumber: { contains: search, mode: 'insensitive' as const } },
-            ],
-        } : {};
+        const where: any = {
+            ...(search ? {
+                OR: [
+                    { name: { contains: search, mode: 'insensitive' as const } },
+                    { email: { contains: search, mode: 'insensitive' as const } },
+                    { icNumber: { contains: search, mode: 'insensitive' as const } },
+                ],
+            } : {}),
+            ...(statusFilter ? { status: statusFilter } : {}),
+        };
 
         const [registrations, total] = await Promise.all([
             prisma.registration.findMany({
                 where,
                 skip,
                 take: limit,
-                orderBy: { createdAt: 'asc' },
+                orderBy: { id: sort === 'asc' ? 'asc' : 'desc' },
             }),
             prisma.registration.count({ where }),
         ]);

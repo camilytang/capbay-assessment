@@ -28,13 +28,15 @@ function RegistrationsPage() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sort, setSort] = useState("desc");
+  const [statusFilter, setStatusFilter] = useState("");
 
   useEffect(() => {
     const fetchRegistrations = async () => {
       setLoading(true);
       try {
         const res = await api.get("/registrations", {
-          params: { page, limit: 20, search },
+          params: { page, limit: 20, search, sort, status: statusFilter },
         });
         setRegistrations(res.data.data);
         setPagination(res.data.pagination);
@@ -46,7 +48,7 @@ function RegistrationsPage() {
     };
 
     fetchRegistrations();
-  }, [page, search]);
+  }, [page, search, sort, statusFilter]);
 
   return (
     <div style={{ maxWidth: "1000px", margin: "40px auto", padding: "20px" }}>
@@ -74,21 +76,56 @@ function RegistrationsPage() {
         </button>
       </div>
 
-      <input
-        placeholder="Search by name, email or IC number..."
-        value={search}
-        onChange={(e) => {
-          setSearch(e.target.value);
-          setPage(1);
-        }}
-        style={{
-          width: "100%",
-          padding: "8px",
-          border: "1px solid #ddd",
-          borderRadius: "4px",
-          marginBottom: "16px",
-        }}
-      />
+      <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
+        <input
+          placeholder="Search by name, email or IC number..."
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1);
+          }}
+          style={{
+            flex: 1,
+            padding: "8px",
+            border: "1px solid #ddd",
+            borderRadius: "4px",
+          }}
+        />
+        <select
+          value={statusFilter}
+          onChange={(e) => {
+            setStatusFilter(e.target.value);
+            setPage(1);
+          }}
+          style={{
+            padding: "8px",
+            border: "1px solid #ddd",
+            borderRadius: "4px",
+          }}
+        >
+          <option value="">All Status</option>
+          <option value="REGISTERED">Registered</option>
+          <option value="TEST_DRIVE_SCHEDULED">Test Drive Scheduled</option>
+          <option value="TEST_DRIVE_COMPLETED">Test Drive Completed</option>
+          <option value="PURCHASED">Purchased</option>
+          <option value="CANCELLED">Cancelled</option>
+        </select>
+        <select
+          value={sort}
+          onChange={(e) => {
+            setSort(e.target.value);
+            setPage(1);
+          }}
+          style={{
+            padding: "8px",
+            border: "1px solid #ddd",
+            borderRadius: "4px",
+          }}
+        >
+          <option value="desc">Newest First</option>
+          <option value="asc">Oldest First</option>
+        </select>
+      </div>
 
       {loading ? (
         <p>Loading...</p>
