@@ -15,8 +15,6 @@ model Registration {
   icNumber        String   @unique @map("ic_number")
   status          Status   @default(REGISTERED)
   downPayment     Decimal  @default(0) @db.Decimal(15, 2) @map("down_payment")
-  loanAmount      Decimal  @default(0) @db.Decimal(15, 2) @map("loan_amount")
-  isPromotionEligible Boolean @default(false) @map("is_promotion_eligible")
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
 
