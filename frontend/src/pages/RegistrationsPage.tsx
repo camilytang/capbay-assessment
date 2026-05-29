@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../lib/api";
+import { STATUS_LABELS, STATUS_COLORS } from "../lib/constants";
 
 interface Registration {
   id: number;
@@ -133,6 +134,7 @@ function RegistrationsPage() {
                   padding: "12px",
                   textAlign: "left",
                   borderBottom: "1px solid #ddd",
+                  whiteSpace: "nowrap",
                 }}
               >
                 Status
@@ -173,7 +175,20 @@ function RegistrationsPage() {
                 <td style={{ padding: "12px" }}>{r.id}</td>
                 <td style={{ padding: "12px" }}>{r.name}</td>
                 <td style={{ padding: "12px" }}>{r.email}</td>
-                <td style={{ padding: "12px" }}>{r.status}</td>
+                <td style={{ padding: "12px", whiteSpace: "nowrap" }}>
+                  <span
+                    style={{
+                      padding: "4px 10px",
+                      borderRadius: "12px",
+                      fontSize: "12px",
+                      background: STATUS_COLORS[r.status],
+                      color: "white",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {STATUS_LABELS[r.status]}
+                  </span>
+                </td>
                 <td style={{ padding: "12px" }}>
                   RM {Number(r.downPayment).toLocaleString()}
                 </td>

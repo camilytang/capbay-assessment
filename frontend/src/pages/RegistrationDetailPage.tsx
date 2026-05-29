@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { api } from "../lib/api";
+import { STATUS_LABELS } from "../lib/constants";
 
 interface Registration {
   id: number;
@@ -22,14 +23,6 @@ const VALID_TRANSITIONS: Record<string, string[]> = {
   TEST_DRIVE_COMPLETED: ["PURCHASED", "CANCELLED"],
   PURCHASED: [],
   CANCELLED: [],
-};
-
-const STATUS_LABELS: Record<string, string> = {
-  REGISTERED: "Registered",
-  TEST_DRIVE_SCHEDULED: "Test Drive Scheduled",
-  TEST_DRIVE_COMPLETED: "Test Drive Completed",
-  PURCHASED: "Purchased",
-  CANCELLED: "Cancelled",
 };
 
 function RegistrationDetailPage() {
