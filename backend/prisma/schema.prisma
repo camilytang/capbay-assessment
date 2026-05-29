@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Registration {
+  id              Int      @id @default(autoincrement())
+  name            String
+  email           String   @unique
+  phone           String
+  icNumber        String   @unique @map("ic_number")
+  status          Status   @default(REGISTERED)
+  downPayment     Decimal  @default(0) @db.Decimal(15, 2) @map("down_payment")
+  loanAmount      Decimal  @default(0) @db.Decimal(15, 2) @map("loan_amount")
+  isPromotionEligible Boolean @default(false) @map("is_promotion_eligible")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("registrations")
+}
+
+enum Status {
+  REGISTERED
+  TEST_DRIVE_SCHEDULED
+  TEST_DRIVE_COMPLETED
+  PURCHASED
+  CANCELLED
+}
