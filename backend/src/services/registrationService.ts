@@ -1,10 +1,6 @@
 import { Decimal } from '@prisma/client/runtime/library';
 import prisma from '../lib/prisma';
-
-const CAR_PRICE = new Decimal('200000');
-const DISCOUNT_RATE = new Decimal('0.15');
-const MIN_DOWN_PAYMENT_RATE = new Decimal('0.10');
-const PROMOTION_LIMIT = 10;
+import { CAR_PRICE, DISCOUNT_RATE, MIN_DOWN_PAYMENT_RATE, PROMOTION_LIMIT } from '../lib/constants';
 
 export const checkPromotionEligibility = async (registrationId: number): Promise<boolean> => {
     const registration = await prisma.registration.findUnique({
