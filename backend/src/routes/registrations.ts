@@ -93,7 +93,7 @@ router.get('/:id', async (req: Request, res: Response) => {
         }
 
         const isPromotionEligible = await checkPromotionEligibility(id);
-        const loanAmount = calculateLoanAmount(registration.downPayment);
+        const loanAmount = calculateLoanAmount(registration.downPayment, isPromotionEligible);
 
         res.json({ ...registration, isPromotionEligible, loanAmount });
     } catch (error) {
@@ -135,7 +135,7 @@ router.patch('/:id', async (req: Request, res: Response) => {
         });
 
         const isPromotionEligible = await checkPromotionEligibility(id);
-        const loanAmount = calculateLoanAmount(updated.downPayment);
+        const loanAmount = calculateLoanAmount(updated.downPayment, isPromotionEligible);
 
         res.json({ ...updated, isPromotionEligible, loanAmount });
     } catch (error) {

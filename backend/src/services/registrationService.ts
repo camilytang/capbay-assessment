@@ -23,11 +23,11 @@ export const checkPromotionEligibility = async (registrationId: number): Promise
     return position <= PROMOTION_LIMIT && hasEnoughDownPayment;
 };
 
-export const calculateLoanAmount = (downPayment: Decimal): Decimal => {
-    const isEligible = downPayment.gte(CAR_PRICE.mul(MIN_DOWN_PAYMENT_RATE));
+export const calculateLoanAmount = (downPayment: Decimal, isEligible: boolean): Decimal => {
     const discountedPrice = isEligible
         ? CAR_PRICE.mul(new Decimal('1').minus(DISCOUNT_RATE))
         : CAR_PRICE;
 
-    return discountedPrice.minus(downPayment);
+    const loan = discountedPrice.minus(downPayment);
+    return loan.isNegative() ? new Decimal('0') : loan;
 };
