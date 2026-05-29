@@ -9,18 +9,22 @@ export const checkPromotionEligibility = async (registrationId: number): Promise
 
     if (!registration) return false;
 
-    // Count how many non-cancelled registrations are ahead of this one
+    const minDownPayment = CAR_PRICE.mul(MIN_DOWN_PAYMENT_RATE);
+
+    // Check if this customer paid enough down payment
+    const hasEnoughDownPayment = registration.downPayment.gte(minDownPayment);
+    if (!hasEnoughDownPayment) return false;
+
+    // Count how many non-cancelled registrations with sufficient down payment are ahead of or equal to this one
     const position = await prisma.registration.count({
         where: {
             id: { lte: registrationId },
             status: { not: 'CANCELLED' },
+            downPayment: { gte: minDownPayment },
         },
     });
 
-    const minDownPayment = CAR_PRICE.mul(MIN_DOWN_PAYMENT_RATE);
-    const hasEnoughDownPayment = registration.downPayment.gte(minDownPayment);
-
-    return position <= PROMOTION_LIMIT && hasEnoughDownPayment;
+    return position <= PROMOTION_LIMIT;
 };
 
 export const calculateLoanAmount = (downPayment: Decimal, isEligible: boolean): Decimal => {

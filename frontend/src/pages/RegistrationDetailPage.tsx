@@ -148,7 +148,10 @@ function RegistrationDetailPage() {
               : "❌ Not Eligible"}
           </p>
           <p>Car Price: RM 200,000</p>
-          <p>Down Payment: RM {formatMoney(registration.downPayment)}</p>
+          <p>
+            Down Payment: RM {formatMoney(registration.downPayment)} (
+            {((Number(registration.downPayment) / 200000) * 100).toFixed(2)}%)
+          </p>
           <p>Loan Amount: RM {formatMoney(registration.loanAmount)}</p>
         </div>
 

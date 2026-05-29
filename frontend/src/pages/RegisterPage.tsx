@@ -22,11 +22,30 @@ function RegisterPage() {
     setLoading(true);
     setError("");
     try {
+      const icDigitsOnly = form.icNumber.replace(/\D/g, "");
+      if (icDigitsOnly.length !== 12) {
+        setError("IC number must be exactly 12 digits");
+        setLoading(false);
+        return;
+      }
+
+      const phoneDigitsOnly = form.phone.replace(/\D/g, "");
+      if (phoneDigitsOnly.length < 10) {
+        setError("Phone number must be at least 10 digits");
+        setLoading(false);
+        return;
+      }
+
+      const formattedIC = `${icDigitsOnly.slice(0, 6)}-${icDigitsOnly.slice(6, 8)}-${icDigitsOnly.slice(8, 12)}`;
       const formattedPhone = form.phone.startsWith("+60")
         ? form.phone
         : `+60${form.phone.replace(/^0/, "")}`;
 
-      await api.post("/registrations", { ...form, phone: formattedPhone });
+      await api.post("/registrations", {
+        ...form,
+        icNumber: formattedIC,
+        phone: formattedPhone,
+      });
       setSuccess(true);
       setForm({ name: "", email: "", phone: "", icNumber: "" });
     } catch (err) {
@@ -129,6 +148,7 @@ function RegisterPage() {
             value={form.phone}
             onChange={handleChange}
             required
+            placeholder="e.g. 0123456789"
             style={{
               width: "100%",
               padding: "8px",
@@ -147,6 +167,7 @@ function RegisterPage() {
             value={form.icNumber}
             onChange={handleChange}
             required
+            placeholder="e.g. 940629190011"
             style={{
               width: "100%",
               padding: "8px",

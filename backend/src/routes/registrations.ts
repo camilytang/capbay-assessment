@@ -23,6 +23,17 @@ router.post('/', async (req: Request, res: Response) => {
             return;
         }
 
+        const icDigitsOnly = icNumber.replace(/\D/g, '');
+        if (icDigitsOnly.length !== 12) {
+            res.status(400).json({ error: 'IC number must be exactly 12 digits' });
+            return;
+        }
+
+        if (phone.replace(/\D/g, '').length < 10) {
+            res.status(400).json({ error: 'Phone number must be at least 10 digits' });
+            return;
+        }
+
         const registration = await prisma.registration.create({
             data: { name, email, phone, icNumber },
         });

@@ -1,7 +1,7 @@
 import { Decimal } from '@prisma/client/runtime/library';
 import { CAR_PRICE, DISCOUNT_RATE, MIN_DOWN_PAYMENT_RATE, PROMOTION_LIMIT } from '../lib/constants';
 
-// Pure function we can test without database
+// Pure function tests for promotion eligibility and loan amount calculation logic
 const checkEligibility = (position: number, downPayment: Decimal): boolean => {
     const minDownPayment = CAR_PRICE.mul(MIN_DOWN_PAYMENT_RATE);
     const hasEnoughDownPayment = downPayment.gte(minDownPayment);
@@ -28,10 +28,11 @@ describe('Promotion Eligibility', () => {
         expect(result).toBe(false);
     });
 
-    test('Customer C - 11th to register with 10% down payment should not be eligible', () => {
+    test('Customer C - 11th to register BUT only 10 qualifying registrations ahead, so eligible', () => {
         const downPayment = CAR_PRICE.mul(new Decimal('0.10')); // RM 20,000
-        const result = checkEligibility(11, downPayment);
-        expect(result).toBe(false);
+        const result = checkEligibility(10, downPayment);
+
+        expect(result).toBe(true);
     });
 
     test('Customer in top 10 with exactly 10% down payment should be eligible', () => {
