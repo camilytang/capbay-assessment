@@ -28,8 +28,8 @@ router.post('/', async (req: Request, res: Response) => {
         });
 
         res.status(201).json(registration);
-    } catch (error: any) {
-        if (error.code === 'P2002') {
+    } catch (error) {
+        if (error instanceof Error && 'code' in error && error.code === 'P2002') {
             res.status(409).json({ error: 'Email or IC number already registered' });
             return;
         }
