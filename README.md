@@ -1,4 +1,4 @@
-# CapBay Auto — Test Drive Registration System
+# CapBay Auto: Test Drive Registration System
 
 A web-based system for CapBay Auto Sdn. Bhd. to manage test drive registrations for the CapBay Vroom (RM 200,000). Customers can register for a test drive, and sales agents can manage registrations, track promotion eligibility, and update purchase status.
 
@@ -83,7 +83,7 @@ npm test
 
 ## Assumptions
 
-- **Customer-facing portal:** Customers only register via the form. There is no customer login or status tracking portal — the sales agent contacts them after registration to schedule the test drive.
+- **Customer-facing portal:** Customers only register via the form. There is no customer login or status tracking portal. The sales agent contacts them after registration to schedule the test drive.
 - **Phone number format:** Users enter their number starting with 0 (e.g. `0123456789`). The system automatically formats it to Malaysian international format (+60) on save. Validation checks for a minimum of 10 digits.
 - **IC number format:** Stored as `YYMMDD-PB-####` (e.g. `940629-19-1234`). Users enter 12 digits without dashes and the system formats it automatically.
 - **Down payment timing:** Down payment is updated by the sales agent after the customer's loan is approved. It defaults to RM 0.00 at registration.
@@ -94,17 +94,17 @@ npm test
 
 All monetary amounts use `Decimal(15, 2)` in PostgreSQL via Prisma, and the `Decimal` class from `@prisma/client/runtime/library` in TypeScript.
 
-Floating point types like `float` or `double` cannot represent decimal fractions exactly in binary — for example `0.1 + 0.2 = 0.30000000000000004` in JavaScript. For financial data this is unacceptable. `Decimal` stores numbers with exact precision, preventing rounding errors across calculations like loan amounts and down payment percentages.
+Floating point types like `float` or `double` cannot represent decimal fractions exactly in binary. For example `0.1 + 0.2 = 0.30000000000000004` in JavaScript. For financial data this is unacceptable. `Decimal` stores numbers with exact precision, preventing rounding errors across calculations like loan amounts and down payment percentages.
 
 ---
 
-## Customer B / Customer C — Promotion Eligibility
+## Customer B / Customer C: Promotion Eligibility
 
 **The question:** If Customer B (2nd to register) does not fulfill the down payment requirement, does Customer C (11th to register) become eligible for the promotion?
 
 **Decision: Yes, Customer C becomes eligible.**
 
-**Reasoning:** The promotion requires two conditions — registered for a test drive AND paid at least 10% down payment (RM 20,000). A customer who has not paid the minimum has not fulfilled their side of the promotion conditions. Counting them toward the 10 available slots would be unfair to customers who have genuinely committed.
+**Reasoning:** The promotion requires two conditions: Registered for a test drive AND paid at least 10% down payment (RM 20,000). A customer who has not paid the minimum has not fulfilled their side of the promotion conditions. Counting them toward the 10 available slots would be unfair to customers who have genuinely committed.
 
 Therefore, the system counts only registrations that are:
 
@@ -127,4 +127,4 @@ The initial setup placed `dotenv.config()` in `src/index.ts` to load environment
 
 Claude initially diagnosed this incorrectly. After further investigation, the root cause was identified: TypeScript `import` statements compile to CommonJS `require()` calls which are hoisted and executed before any other code. This meant Prisma's `new PrismaClient()` was called before `dotenv.config()` had a chance to load `DATABASE_URL`, causing Prisma to connect with no credentials.
 
-The fix was to move `dotenv.config()` into `src/lib/prisma.ts`, ensuring it runs before `new PrismaClient()` is instantiated. This is a subtle Node.js module loading behaviour that Claude's initial suggestion missed.
+The fix was to move `dotenv.config()` into `src/lib/prisma.ts`, ensuring it runs before `new PrismaClient()` is instantiated.
