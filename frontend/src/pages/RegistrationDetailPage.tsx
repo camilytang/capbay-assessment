@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { api } from "../lib/api";
-import { STATUS_LABELS } from "../lib/constants";
+import { formatMoney, STATUS_LABELS } from "../lib/constants";
 
 interface Registration {
   id: number;
@@ -41,7 +41,7 @@ function RegistrationDetailPage() {
       try {
         const res = await api.get(`/registrations/${id}`);
         setRegistration(res.data);
-        setDownPayment(res.data.downPayment);
+        setDownPayment(Number(res.data.downPayment).toFixed(2));
       } catch {
         setError("Registration not found");
       } finally {
@@ -148,12 +148,8 @@ function RegistrationDetailPage() {
               : "❌ Not Eligible"}
           </p>
           <p>Car Price: RM 200,000</p>
-          <p>
-            Down Payment: RM {Number(registration.downPayment).toLocaleString()}
-          </p>
-          <p>
-            Loan Amount: RM {Number(registration.loanAmount).toLocaleString()}
-          </p>
+          <p>Down Payment: RM {formatMoney(registration.downPayment)}</p>
+          <p>Loan Amount: RM {formatMoney(registration.loanAmount)}</p>
         </div>
 
         <div style={{ marginBottom: "24px" }}>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../lib/api";
-import { STATUS_LABELS, STATUS_COLORS } from "../lib/constants";
+import { STATUS_LABELS, STATUS_COLORS, formatMoney } from "../lib/constants";
 
 interface Registration {
   id: number;
@@ -190,7 +190,7 @@ function RegistrationsPage() {
                   </span>
                 </td>
                 <td style={{ padding: "12px" }}>
-                  RM {Number(r.downPayment).toLocaleString()}
+                  RM {formatMoney(r.downPayment)}
                 </td>
                 <td style={{ padding: "12px" }}>
                   {new Date(r.createdAt).toLocaleDateString()}

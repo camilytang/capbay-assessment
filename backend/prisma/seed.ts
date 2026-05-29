@@ -12,6 +12,7 @@ async function main() {
     // Clear existing data
     console.log('Clearing existing data...');
     await prisma.registration.deleteMany(); // wipes existing data so seed is repeatable
+    await prisma.$executeRaw`ALTER SEQUENCE registrations_id_seq RESTART WITH 1`;
 
     // Seed new data
     console.log('Seeding 50000 registrations...');

@@ -13,3 +13,10 @@ export const STATUS_COLORS: Record<string, string> = {
     PURCHASED: "#28a745",
     CANCELLED: "#dc3545",
 };
+
+export const formatMoney = (amount: string | number): string => {
+    return Number(amount).toLocaleString('en-MY', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
+};
