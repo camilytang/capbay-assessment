@@ -29,7 +29,7 @@ git clone https://github.com/camilytang/capbay-assessment.git
 cd capbay-assessment
 ```
 
-Then open the `capbay-assessment` folder in VS Code. Open the integrated terminal in VS Code (`Ctrl + `` ` ``).
+Then open the `capbay-assessment` folder in VS Code. Open the integrated terminal in VS Code.
 
 ### 2. Setup Backend
 
@@ -72,7 +72,7 @@ npm run dev
 
 ### 3. Setup Frontend
 
-Open a **new terminal** in VS Code (`Ctrl + Shift + `` ` ``):
+Open a **new terminal** in VS Code:
 
 ```bash
 cd frontend
@@ -84,7 +84,7 @@ The app will be available at `http://localhost:5173`
 
 ### 4. Run Tests
 
-Open a **new terminal** in VS Code (`Ctrl + Shift + `` ` ``):
+Open a **new terminal** in VS Code:
 
 ```bash
 cd backend
