@@ -17,16 +17,19 @@ A web-based system for CapBay Auto Sdn. Bhd. to manage test drive registrations 
 
 ### Prerequisites
 
-- Node.js v18+
-- A PostgreSQL database:
-  - Sign up free at [neon.tech](https://neon.tech) (no installation needed)
+- **Node.js v18+** — if not installed, download from [nodejs.org](https://nodejs.org) and restart your terminal after installation
+- **A PostgreSQL database** — sign up free at [neon.tech](https://neon.tech) (no installation needed)
 
 ### 1. Clone the repository
+
+Run this in your terminal (Command Prompt or PowerShell):
 
 ```bash
 git clone https://github.com/camilytang/capbay-assessment.git
 cd capbay-assessment
 ```
+
+Then open the `capbay-assessment` folder in VS Code. Open the integrated terminal in VS Code (`Ctrl + `` ` ``).
 
 ### 2. Setup Backend
 
@@ -42,7 +45,12 @@ DATABASE_URL="postgresql://username:password@host/dbname?sslmode=require&channel
 PORT=3000
 ```
 
-Replace the `DATABASE_URL` with your Neon connection string from your Neon project dashboard.
+To get your `DATABASE_URL`:
+
+1. Sign up at [neon.tech](https://neon.tech)
+2. Create a new project
+3. Go to your project dashboard → **Connection Details**
+4. Copy the connection string and paste it as your `DATABASE_URL`
 
 Run database migrations:
 
@@ -64,7 +72,7 @@ npm run dev
 
 ### 3. Setup Frontend
 
-Open a new terminal:
+Open a **new terminal** in VS Code (`Ctrl + Shift + `` ` ``):
 
 ```bash
 cd frontend
@@ -72,7 +80,11 @@ npm install
 npm run dev
 ```
 
+The app will be available at `http://localhost:5173`
+
 ### 4. Run Tests
+
+Open a **new terminal** in VS Code (`Ctrl + Shift + `` ` ``):
 
 ```bash
 cd backend
